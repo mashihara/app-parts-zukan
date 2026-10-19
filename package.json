@@ -1,0 +1,31 @@
+{
+  "name": "app-parts-zukan",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "api": "node scripts/build-api.ts",
+    "dev": "npm run api && next dev",
+    "build": "npm run api && next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "16.4.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.2",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "type": "module"
+}
