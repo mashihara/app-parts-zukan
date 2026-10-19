@@ -354,12 +354,12 @@ function DragReorder() {
 function Haptics() {
   return (
     <div className="ph-buzz">
-      <span className="ph-wave" aria-hidden="true">((</span>
+      <svg className="ph-wave" width="22" height="56" viewBox="0 0 22 56" aria-hidden="true"><path d="M16 6c-9 12-9 32 0 44M8 14c-5 8-5 20 0 28" /></svg>
       <Phone h={250}>
         <NavBar title="設定" />
         <div className="ph-group"><div className="ph-row">予約の前日に通知する<Sw /></div></div>
       </Phone>
-      <span className="ph-wave" aria-hidden="true">))</span>
+      <svg className="ph-wave" width="22" height="56" viewBox="0 0 22 56" aria-hidden="true" style={{ transform: "scaleX(-1)" }}><path d="M16 6c-9 12-9 32 0 44M8 14c-5 8-5 20 0 28" /></svg>
     </div>
   );
 }

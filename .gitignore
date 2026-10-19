@@ -47,3 +47,6 @@ next-env.d.ts
 # Playwright
 /test-results/
 /playwright-report/
+
+# 部品ごとの共有画像の材料（scripts/capture-og.mjs が撮る）
+/scripts/og-src/

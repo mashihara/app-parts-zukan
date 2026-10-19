@@ -384,6 +384,28 @@ test("部品のページは、その部品の名前が h1 で、説明が開い�
   expect(sitemap).toContain("/confusions/</loc>");
 });
 
+// 共有画像・アイコン（2026-10-20）。部品ごとの共有画像があり、トップにも favicon.ico の指定がある
+test("部品ごとの共有画像・favicon・manifest が出ている", async ({ page, request }) => {
+  const html = await (await request.get("/parts/tab-bar/")).text();
+  expect(html).toMatch(/<meta property="og:image" content="[^"]*\/og\/tab-bar\.png"/);
+  expect(html).toMatch(/<meta name="twitter:image" content="[^"]*\/og\/tab-bar\.png"/);
+  // 一覧にある全部品に共有画像がある
+  await page.goto("/");
+  const ids = await page.locator("#names .name-card .nc-open").evaluateAll((els) => els.map((e) => e.getAttribute("href")!.match(/parts\/([^/]+)\//)![1]));
+  expect(ids.length).toBe(58);
+  for (const id of ids) {
+    const r = await request.get(`/og/${id}.png`);
+    expect(r.status(), `${id} の共有画像`).toBe(200);
+    expect(r.headers()["content-type"]).toContain("image/png");
+  }
+  const top = await (await request.get("/")).text();
+  expect(top).toMatch(/<link rel="icon" href="[^"]*\/favicon\.ico"/);
+  expect(top).toMatch(/<link rel="manifest" href="[^"]*\/manifest\.webmanifest"/);
+  const mf = await (await request.get("/manifest.webmanifest")).json();
+  expect(mf.name).toBe("アプリ部品図鑑");
+  for (const ic of mf.icons) expect((await request.get(ic.src)).status()).toBe(200);
+});
+
 test("全体図に無い部品は真ん中を単体表示にし、全体図へ戻れる", async ({ page }) => {
   await page.goto("/");
   const toc = page.getByRole("navigation", { name: "部品の目次" });

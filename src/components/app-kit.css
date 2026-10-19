@@ -241,8 +241,8 @@
 .ph-drag.is-lift { z-index: 2; transform: scale(1.04) translateY(-6px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18); border-radius: 10px; }
 .ph-buzz { position: relative; display: flex; align-items: center; gap: 12px; animation: ph-shake 1.6s ease-in-out infinite; }
 @keyframes ph-shake { 0%, 60%, 100% { transform: translateX(0); } 64% { transform: translateX(-3px); } 68% { transform: translateX(3px); } 72% { transform: translateX(-2px); } 76% { transform: translateX(2px); } }
-/* 震えの印。端末の左右に「((」「))」を山吹で描く */
-.ph-wave { font: 900 34px/1 sans-serif; color: var(--ph-hl); letter-spacing: -2px; }
+/* 震えの印。端末の左右に弧を山吹で描く（文字の「((」はフォントによって縦線に化けた） */
+.ph-wave { flex: none; fill: none; stroke: var(--ph-hl); stroke-width: 3.5; stroke-linecap: round; }
 .ph-buzz .ph-group { margin-top: 10px; }
 
 /* ---- 重なって出る窓 ---- */

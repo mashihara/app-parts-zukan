@@ -17,6 +17,8 @@
 - 姉妹サイトとの相互リンク: 上の帯の「Web／アプリ」の切り替え、トップの入口、各ページのフッター、部品の説明（`parts.ts` の `web` に UI部品図鑑の id を書いた部品だけ）。UI部品図鑑の id と名前は `src/lib/sister.ts`（正本は UI部品図鑑の parts.ts）。UI部品図鑑の側にも、こちらへの同じ導線がある。片方で部品の id を変えたら、もう片方のリンクも直す
 - 公開URLは mashiharalab.dev/app-parts-zukan/（配信の実体は GitHub Pages、ましはらラボの `next.config.ts` が中継）。canonical・サイトマップは `SITE_URL`（CI の環境変数）で絶対URLにする
 - 見た目を変えたら共有画像（`src/app/opengraph-image.png`、1200×630）も今の見た目で作り直す
+- 部品ごとの共有画像は `public/og/<id>.png`（部品のページの og:image・twitter:image）。部品を足した・名前や見本を変えたときは、`npm run build` → `out/` を配信（ポート4334）→ `node scripts/capture-og.mjs` → `python3 scripts/build-og.py` で作り直す。e2e が全部品の画像の有無を検査する
+- トップのページは、サブパスで書き出すと Next.js が `app/favicon.ico` の指定を付けないので、`src/app/page.tsx` で `<link rel="icon">` を足している（無いとドメイン直下のましはらラボのアイコンが出る）
 - 別の作業ツリーと同時に検査するときは `PW_PORT=4332 npx playwright test` のように番号を変える
 - 変更後は `npm run build` → `npx playwright test`（全58語の見本・浮かせた部品の重なり・引き出し線の重なりとはみ出し・スマホ幅・姉妹サイトへのリンクも検査する）
 

@@ -17,8 +17,9 @@ export async function generateMetadata({ params }: PageProps<"/parts/[id]">): Pr
   const title = partTitle(p);
   const description = partDescription(p);
   const url = `${SITE_URL}${partPath(p.id)}`;
-  // 子で openGraph を書くとルートの共有画像が付かなくなるので、画像も明示する
-  const images = [{ url: `${SITE_URL}/opengraph-image.png`, width: 1200, height: 630, alt: SITE_NAME }];
+  // 子で openGraph を書くとルートの共有画像が付かなくなるので、画像も明示する。
+  // 部品ごとの共有画像（名前・ひとこと・見本）は public/og/<id>.png（scripts/capture-og.mjs → build-og.py で作る）
+  const images = [{ url: `${SITE_URL}/og/${p.id}.png`, width: 1200, height: 630, alt: `${p.ja}（${shortEn(p)}）｜${SITE_NAME}` }];
   return {
     title,
     description,
