@@ -449,6 +449,26 @@ test("UI部品図鑑（Web版）へ、上の帯・トップ・フッター・部
   await expect(page.locator(".entry-sister")).toHaveCount(0);
 });
 
+// 閲覧数（Vercel Web Analytics）は replaceState を数えないので、部品のページに移ったときだけ自分で1回送る
+test("部品を選んでURLが変わると、閲覧数を1回送る", async ({ page }) => {
+  await page.addInitScript(() => {
+    const w = window as unknown as { va: (...a: unknown[]) => void; vaCalls: unknown[][] };
+    w.vaCalls = [];
+    w.va = (...a) => w.vaCalls.push(a);
+  });
+  await page.goto("/");
+  const calls = () => page.evaluate(() => (window as unknown as { vaCalls: [string, { path: string }][] }).vaCalls);
+  expect(await calls()).toEqual([]);
+  await page.locator(".callout", { hasText: "タブバー" }).click();
+  await expect.poll(calls).toEqual([["pageview", { path: "/parts/tab-bar/" }]]);
+  // 同じ部品のまま、AIに渡す名前を足しても（URLのクエリだけ変わる）数えない
+  await page.getByRole("button", { name: "AIに渡す名前に入れる" }).click();
+  await page.waitForTimeout(200);
+  expect((await calls()).length).toBe(1);
+  await page.locator(".callout", { hasText: "バッジ" }).click();
+  await expect.poll(async () => (await calls()).length).toBe(2);
+});
+
 test("上の帯はスクロールしても画面上部に残る", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(() => window.scrollTo(0, 1500));

@@ -86,8 +86,11 @@ export default function Dictionary({ children, initialPart }: { children?: React
   useEffect(() => {
     if (!loaded.current) return;
     const path = `${BASE_PATH}${s.part ? partPath(s.part) : "/"}`;
+    const moved = window.location.pathname !== path;
     window.history.replaceState(null, "", `${path}${query ? `?${query}` : ""}${window.location.hash}`);
     document.title = s.part ? partTitle(PART_MAP[s.part]) : TOP_TITLE;
+    // 閲覧数の計測（layout.tsx で読む Vercel Web Analytics）は replaceState を数えないため、部品のページに移ったら1回送る
+    if (moved) (window as { va?: (e: string, p: object) => void }).va?.("pageview", { path });
   }, [s.part, query]);
 
   const part = s.part ? PART_MAP[s.part] : null;
